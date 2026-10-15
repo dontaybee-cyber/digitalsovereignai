@@ -243,3 +243,4 @@ extended breakdown) without navigating away from the article.
   — it logs and moves on. Fine at the list sizes you'll launch with;
   worth hardening (retries, a real queue) once you're past a few hundred
   subscribers or sending very frequently.
+# digitalsovereignai
