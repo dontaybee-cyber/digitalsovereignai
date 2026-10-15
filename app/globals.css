@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-void-black text-text-primary antialiased;
+  }
+
+  ::selection {
+    @apply bg-ocean-blue/30 text-text-primary;
+  }
+
+  /* Visible keyboard focus everywhere */
+  :focus-visible {
+    outline: 2px solid #0077b6;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Editorial article body copy */
+  .prose-journal {
+    @apply max-w-prose text-[1.125rem] leading-[1.85] text-text-primary font-serif;
+  }
+
+  .prose-journal p {
+    @apply mb-6;
+  }
+
+  .prose-journal h2 {
+    @apply font-sans text-2xl font-semibold text-text-primary mt-12 mb-4 tracking-tight;
+  }
+
+  .prose-journal h3 {
+    @apply font-sans text-xl font-semibold text-text-primary mt-8 mb-3 tracking-tight;
+  }
+
+  .prose-journal blockquote {
+    @apply border-l-2 border-deep-claret-border pl-5 my-8 text-text-muted italic;
+  }
+
+  /* Inline technical trigger: styled Ocean Blue interactive reference */
+  .tech-trigger {
+    @apply relative inline font-sans text-[0.95em] text-ocean-blue-bright underline decoration-ocean-blue/40 decoration-2 underline-offset-4 transition-colors duration-150 hover:text-ocean-blue-bright hover:decoration-ocean-blue-bright cursor-pointer;
+  }
+
+  .tech-trigger:focus-visible {
+    outline-offset: 3px;
+  }
+}
