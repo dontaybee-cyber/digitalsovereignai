@@ -85,6 +85,11 @@ docker compose logs -f`,
       <h2>How local is local?</h2>
       <p>After the one-time downloads of the container images and the model, the core stack is designed to need nothing from the outside. The one exception is SearXNG, which is optional. When you use it, it queries public search engines on your behalf, so those searches do leave the machine. Leave it out and the assistant runs fully self-contained.</p>
 
+      <h2>Get the project</h2>
+      <p>The current version of the boilerplate is available as a single zip. It matches the steps described below and is still in testing.</p>
+      <p><a class="download-link" href="/downloads/sovereign-ai-boilerplate.zip" download>Download sovereign-ai-boilerplate.zip</a></p>
+      <p>Before you run it, read through the compose file and the system prompt so you know exactly what it does on your machine.</p>
+
       <h2>The steps we took</h2>
       <ol>
         <li><strong>Defined the goal.</strong> One device or server, fully self-contained, with no accounts or outside services needed for normal use.</li>

@@ -50,6 +50,7 @@
   .prose-journal code { @apply font-mono text-[0.9em] text-ocean-blue-bright; }
   .prose-journal pre { @apply my-6 overflow-x-auto rounded-md border border-deep-claret-border bg-void-black-raised p-4 text-sm; }
   .prose-journal pre code { @apply text-text-primary; }
+  .prose-journal a.download-link { @apply inline-block rounded-md bg-ocean-blue px-5 py-2.5 font-sans text-sm font-medium text-text-primary no-underline transition-colors hover:bg-ocean-blue-deep; }
 
   .prose-journal p {
     @apply mb-6;
