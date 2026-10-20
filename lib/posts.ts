@@ -35,106 +35,79 @@ export interface Post {
 
 export const posts: Post[] = [
   {
-    slug: "who-controls-the-weights",
-    title: "Who Controls the Weights, Controls the Future",
-    dek: "Model ownership is the new land ownership. Here's why decentralized custody of weights matters more than decentralized compute.",
+    slug: "local-ai-boilerplate",
+    title: "Building a Local AI Boilerplate That Stays on One Machine",
+    dek: "How we took a Docker-based local AI stack (Ollama, SearXNG, Open WebUI) from a working draft to a hardened, single-device boilerplate, step by step.",
     category: "Sovereign Tech",
-    author: "M. Okafor",
-    date: "2026-08-14",
-    readTime: "7 min read",
-    references: [
-      {
-        id: "shard-consensus",
-        label: "sharded weight consensus",
-        kind: "diagram",
-        title: "Sharded Weight Consensus Flow",
-        description:
-          "How a model's parameter shards are distributed across independent nodes and reconciled without a single custodian ever holding the full weight set.",
-      },
-      {
-        id: "verify-inference",
-        label: "verifiable inference proof",
-        kind: "code",
-        title: "Verifiable Inference Proof (pseudocode)",
-        description:
-          "A simplified sketch of how a node proves it ran the declared model on the declared input, without revealing the weights themselves.",
-        language: "python",
-        code: `def verify_inference(commitment, input_hash, output, proof):
-    # commitment: hash of the model weights, published on-chain
-    # proof: zk-SNARK proof of correct execution
-    expected = derive_expected_root(commitment, input_hash)
-    return zk_verify(proof, expected, output)`,
-      },
-    ],
-    bodyHtml: `
-      <p>Every cycle of computing has a resource that determines who holds power. Mainframes: floor space. PCs: distribution. Cloud: capital. For AI, it isn't compute anymore &mdash; it's the weights themselves.</p>
-      <p>A frontier model's weights are the actual embodiment of billions of dollars of training runs, curated data, and tuning decisions. Whoever custodies them unilaterally can revoke access, change behavior overnight, or simply disappear. That's not a hypothetical; we've watched it happen to entire developer ecosystems built on a single vendor's goodwill.</p>
-      <p>The sovereign alternative isn't "run everything locally," which is a nice slogan but ignores the reality that most useful models won't fit on a laptop for years. The real alternative is {{ref:shard-consensus}}: splitting a model's parameters across independent, mutually distrustful custodians so no single party can unilaterally alter or withhold it.</p>
-      <p>The obvious objection is trust: if I don't hold the full model, how do I know the inference I got back actually came from it, unaltered? This is where {{ref:verify-inference}} comes in &mdash; cryptographic proofs that let a node demonstrate it executed the committed model on your input, without ever exposing the weights to you or anyone else.</p>
-      <h2>This isn't about ideology, it's about incentives</h2>
-      <p>None of this requires believing centralized labs are malicious. It requires believing that concentrated control over a foundational technology is a structural risk, independent of the intentions of whoever currently holds it. Sovereignty is a hedge against a future custodian you haven't met yet.</p>
-      <p>We'll spend the next several posts in this series walking through the actual mechanics &mdash; consensus overhead, latency tradeoffs, and where this genuinely doesn't work yet. This is engineering, not a manifesto.</p>
-    `,
-  },
-  {
-    slug: "why-we-built-this",
-    title: "Why We Built This Instead of Just Talking About It",
-    dek: "A short account of what the Sovereign AI mission actually is, and what it deliberately isn't.",
-    category: "The Mission",
-    author: "R. Vance",
-    date: "2026-08-02",
+    author: "Dontay Beemon",
+    date: "2026-10-19",
     readTime: "5 min read",
-    references: [],
-    bodyHtml: `
-      <p>There's no shortage of people willing to describe what decentralized AI should look like. There's a much shorter list of people willing to spend two years building the boring plumbing that makes it real.</p>
-      <p>This community exists for the second group, and for the people who want to understand what they're building well enough to ask hard questions. We're not interested in tribal signaling about which lab is good or bad this week. We're interested in whether the systems we ship actually reduce single points of failure and control.</p>
-      <p>That means we'll publish things that are unglamorous: benchmark writeups that don't flatter us, postmortems on approaches that didn't pan out, and long technical explainers that assume you're smart but not necessarily an ML researcher.</p>
-      <h2>What "sovereign" means here</h2>
-      <p>Not "no rules." Not "no companies." It means no party &mdash; including us &mdash; should be a mandatory chokepoint for whether your model runs tomorrow.</p>
-    `,
-  },
-  {
-    slug: "the-alignment-tax-nobody-mentions",
-    title: "The Alignment Tax Nobody Mentions",
-    dek: "Safety tuning has real, measurable costs on model behavior. Pretending otherwise doesn't help anyone build better systems.",
-    category: "AI Ethics/Philosophy",
-    author: "D. Ferreira",
-    date: "2026-07-21",
-    readTime: "9 min read",
     references: [
       {
-        id: "rlhf-tradeoff",
-        label: "reward model tradeoff curve",
-        kind: "breakdown",
-        title: "RLHF Reward-Helpfulness Tradeoff",
-        description:
-          "A conceptual breakdown of how aggressive reward shaping during RLHF tends to trade raw task performance for compliance, and why that curve isn't linear.",
+        id: "project-layout",
+        label: "the project layout",
+        kind: "code",
+        title: "Starting project layout",
+        description: "The folder structure we started from. Your own copy may have grown since.",
+        language: "text",
+        code: `sovereign-ai/
+├── .gitignore
+├── docker-compose.yml
+├── setup.sh
+├── system-prompt.txt
+└── searxng/
+    └── settings.yml`,
+      },
+      {
+        id: "verify-commands",
+        label: "a short set of checks",
+        kind: "code",
+        title: "First-run checks",
+        description: "Confirm prerequisites, run setup, then check each service on its own before using the chat interface.",
+        language: "bash",
+        code: `docker --version
+docker compose version
+chmod +x setup.sh
+./setup.sh
+docker compose ps
+docker exec sovereign_ollama ollama list
+docker compose logs searxng
+docker compose logs -f`,
       },
     ],
     bodyHtml: `
-      <p>Ask most people building consumer AI products whether alignment tuning changes model capability, and you'll get a diplomatic non-answer. Ask the researchers actually running the ablations, and you'll get a much more interesting conversation.</p>
-      <p>Every round of safety tuning shifts a model's behavior distribution. Sometimes that shift is exactly what you want &mdash; refusing genuinely dangerous requests. Sometimes it's collateral damage: a model that hedges on benign technical questions because hedging was rewarded during training. The {{ref:rlhf-tradeoff}} isn't a scandal, it's just a real engineering tradeoff that deserves to be discussed honestly instead of denied.</p>
-      <h2>Why this matters for a sovereign ecosystem</h2>
-      <p>If we're serious about communities running their own models with their own tuning choices, we need vocabulary for these tradeoffs that isn't borrowed from a PR department. Transparency about the tax is what lets a community decide, deliberately, how much of it they want to pay.</p>
-      <p>We don't have a tidy answer here. We have a series of experiments coming, and we'll show you the ugly middle of the process, not just the conclusion.</p>
-    `,
-  },
-  {
-    slug: "a-week-of-open-weight-releases",
-    title: "A Week of Open-Weight Releases: The Good, the Bad, the Artificial",
-    dek: "Three releases, three very different sets of promises kept and broken. A field report.",
-    category: "The Good, The Bad, The Artificial",
-    author: "S. Okonkwo",
-    date: "2026-08-28",
-    readTime: "6 min read",
-    references: [],
-    bodyHtml: `
-      <p>It was a strange week. Three labs shipped open-weight models within four days of each other, and the coverage treated all three as equivalent events. They weren't.</p>
-      <p>One release shipped with a genuinely permissive license and full training data provenance. Another shipped weights with a license that quietly forbade competitive commercial use &mdash; open in name, closed in function. The third was, generously, a fine-tune wearing a new model's clothes.</p>
-      <h2>The good</h2>
-      <p>Full provenance releases are rare enough that they deserve real credit when they happen. It lets the community actually audit training data concerns instead of taking safety claims on faith.</p>
-      <h2>The bad, and the artificial</h2>
-      <p>"Open-weight" has become a marketing term untethered from what it used to mean. We'd rather a lab be honest about a restrictive license than call it open and hope nobody reads the fine print.</p>
+      <p>We set out to build a boilerplate for an AI assistant that lives entirely on one machine: no accounts, no API keys, no cloud service required. This post covers what the stack is, every change we made to harden it, and where the project stands now that it has moved into testing.</p>
+
+      <h2>What the stack is</h2>
+      <p>Three services run together under Docker Compose. <strong>Ollama</strong> runs the language model (we used llama3.1). <strong>Open WebUI</strong> is the chat interface. <strong>SearXNG</strong> is a self-hosted meta-search engine that gives the assistant optional access to live web results. Everything is bound to localhost, so nothing is exposed to your network by default.</p>
+      <p>A setup script handles first-run work, and a system prompt file defines how the assistant behaves.</p>
+
+      <h2>How local is local?</h2>
+      <p>After the one-time downloads of the container images and the model, the core stack is designed to need nothing from the outside. The one exception is SearXNG, which is optional. When you use it, it queries public search engines on your behalf, so those searches do leave the machine. Leave it out and the assistant runs fully self-contained.</p>
+
+      <h2>The steps we took</h2>
+      <ol>
+        <li><strong>Defined the goal.</strong> One device or server, fully self-contained, with no accounts or outside services needed for normal use.</li>
+        <li><strong>Audited the original boilerplate.</strong> We reviewed the compose file, the SearXNG settings, the system prompt, and the setup script under one rule: upgrades and efficiency fixes only, with no loss of functionality.</li>
+        <li><strong>Added health checks.</strong> Open WebUI now waits until Ollama and SearXNG report healthy, instead of starting as soon as their containers exist.</li>
+        <li><strong>Turned telemetry off.</strong> The stack sets ANONYMIZED_TELEMETRY=False and DO_NOT_TRACK=1 so nothing phones home by default.</li>
+        <li><strong>Hardened all three containers.</strong> Ollama and Open WebUI now drop all Linux capabilities and enable no-new-privileges, matching what SearXNG already had.</li>
+        <li><strong>Removed the obsolete version key</strong> from the compose file, which modern Docker Compose ignores with a warning.</li>
+        <li><strong>Made the setup script safer.</strong> It now stops on errors, checks that Docker is installed, avoids overwriting an existing SearXNG key when re-run, and times out instead of waiting forever for Ollama to start.</li>
+        <li><strong>Added SearXNG timeouts and retries</strong> so one slow search engine cannot stall a query indefinitely.</li>
+        <li><strong>Kept image tags on latest, with a marked line for pinning.</strong> That is fine for a first run. Pin exact versions when you want reproducible builds.</li>
+        <li><strong>Added a session secret, then took it back out.</strong> We first generated a WEBUI_SECRET_KEY in an .env file. It was only a locally generated string for signing session cookies, but it was unnecessary: Open WebUI creates its own key and stores it in its persistent data folder. We reverted, so there is no .env file and no manual key handling.</li>
+        <li><strong>Moved the project into a real folder in VS Code.</strong> We set up {{ref:project-layout}} and added the Docker and YAML extensions for container status and config validation.</li>
+        <li><strong>Added a .gitignore.</strong> It keeps the data folder (chat history, uploads, local accounts) and any .env files out of version control.</li>
+        <li><strong>Ran setup and checked each service on its own.</strong> Before any end-to-end use, we ran {{ref:verify-commands}} to confirm all three containers were healthy and the model was installed.</li>
+        <li><strong>Removed the remaining third-party dependencies.</strong> After the IDE pass, the only outside service the stack can use is the optional SearXNG.</li>
+        <li><strong>Gave the assistant an onboarding routine.</strong> The system prompt now has it begin by asking the user to give it a name, then asking what it is supposed to learn.</li>
+        <li><strong>Moved to testing.</strong> The next test is a question that needs a live web search, run with the container logs open so the full path from SearXNG to Open WebUI to Ollama can be watched.</li>
+      </ol>
+
+      <h2>Where it stands</h2>
+      <p>The boilerplate is in testing, so treat the claims above as design intent until the results are in. We will report what the logs show.</p>
+      <p>Two housekeeping notes for anyone building from this: keep the data folder out of git, since it holds your chat history, and consider pinning image versions once you have a configuration you trust.</p>
     `,
   },
 ];

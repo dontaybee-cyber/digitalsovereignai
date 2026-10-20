@@ -44,6 +44,13 @@
     @apply max-w-prose text-[1.125rem] leading-[1.85] text-text-primary font-serif;
   }
 
+  .prose-journal ol { @apply list-decimal pl-6 mb-6 space-y-3; }
+  .prose-journal ul { @apply list-disc pl-6 mb-6 space-y-2; }
+  .prose-journal li { @apply pl-1; }
+  .prose-journal code { @apply font-mono text-[0.9em] text-ocean-blue-bright; }
+  .prose-journal pre { @apply my-6 overflow-x-auto rounded-md border border-deep-claret-border bg-void-black-raised p-4 text-sm; }
+  .prose-journal pre code { @apply text-text-primary; }
+
   .prose-journal p {
     @apply mb-6;
   }
